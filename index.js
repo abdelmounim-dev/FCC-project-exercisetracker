@@ -28,10 +28,12 @@ app.post('/api/users', (req, res) => {
 })
 
 app.get('/api/users', (req, res) => {
-  let usersObject = [];
-  users.forEach((user, i) => usersObject.push({ _id: i + 1, username: user.username}))
-  // console.log(usersObject)
-  res.send(usersObject)
+  res.send(
+    users.map(({ username }, i) => ({
+      _id: i.toString(),
+      username,
+    }))
+  );
 })
 
 app.post('/api/users/:id/exercises', (req, res) => {
@@ -86,8 +88,6 @@ app.get('/api/users/:id/logs', (req, res) => {
   if (limit) filteredLog = filteredLog.slice(0, limit)
 
   const logs = {...rest, log:  filteredLog, count: filteredLog.length}
-  if(from || to || limit)
-  console.log(">>>\n\n",users[_id], logs, {from, to, limit}, "<<<\n\n")
 
   res.send(logs)
 })
